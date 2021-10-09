@@ -13,5 +13,6 @@ We represent the problem as a **Constrained QUadratic Model**:
 1. Each bin **b<sub>j</sub>** is associated to a binery variable **bin_used_\<j\>** indicating that bin b<sub>j</sub> is in use.
 1. To minimize the number of used bins is to minimize the sum of bin_used_\<j\> variables with value 1
 
+
 ### Problem formulation
 ### Problem workflow
