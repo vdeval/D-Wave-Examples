@@ -15,7 +15,9 @@ item_weight_range = [10, 20]
 weights = list(np.random.randint(*item_weight_range, num_items))
 bin_capacity = 100
 max_time = 10
-print("Problem: pack a total weight of {} into bins of capacity {}.".format(sum(weights), bin_capacity)) 
+print("Problem: pack a total weight of {} into bins of capacity {}.".format(sum(weights), bin_capacity))
+for i, value in enumerate(weights):
+    print("---Item {} : {}".format(i, value))
 
 # ------- Model Configuration -------
 
@@ -36,7 +38,7 @@ for i in range(num_items):
     one_bin_per_item = cqm.add_constraint(sum(item_in_bin[i]) == 1, label=f'item_placing_{i}')
 
 # Constraint 2: Each bin has limited capacity
-for j in range(num_items):
+for j in range(num_bins):
     bin_up_to_capacity = cqm.add_constraint(
         sum(weights[i] * item_in_bin[i][j] for i in range(num_items)) - bin_used[j] * bin_capacity <= 0,
         label=f'capacity_bin_{j}')
