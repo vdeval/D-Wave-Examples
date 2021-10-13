@@ -8,16 +8,25 @@ from dimod import ConstrainedQuadraticModel
 from dimod import Binary
 from dwave.system import LeapHybridCQMSampler
 
-# ------- Program COnfiguration -------
-num_items = 20
-num_bins = 5
-item_weight_range = [10, 20]
-weights = list(np.random.randint(*item_weight_range, num_items))
-bin_capacity = 100
+# ------- Program Configuration -------
+#num_items = 20
+#num_bins = 5
+#item_weight_range = [10, 20]
+#weights = list(np.random.randint(*item_weight_range, num_items))
+#bin_capacity = 100
+
+weights = [11, 12, 13, 14, 15]
+num_items = len(weights)
+bin_capacity = [12, 15, 28, 37]
+num_bins = len(bin_capacity)
+
 max_time = 10
-print("Problem: pack a total weight of {} into bins of capacity {}.".format(sum(weights), bin_capacity))
+
+print("Problem: pack a total weight of {} into bins of capacity {}.".format(sum(weights), sum(bin_capacity)))
 for i, value in enumerate(weights):
     print("---Item {} : {}".format(i, value))
+for i, value in enumerate(bin_capacity):
+    print("---Bin {} : {}".format(i, value))
 
 # ------- Model Configuration -------
 
@@ -25,7 +34,7 @@ for i, value in enumerate(weights):
 cqm = ConstrainedQuadraticModel()
 
 # Creation of the list of bin_used variables
-bin_used = [Binary(f'bin_used_{j}') for j in range(num_items)]
+bin_used = [Binary(f'bin_used_{j}') for j in range(num_bins)]
 
 # Objective function
 cqm.set_objective(sum(bin_used))
@@ -35,12 +44,13 @@ item_in_bin = [[Binary(f'item_{i}_in_bin_{j}') for j in range(num_bins)] for i i
 
 # Constraint 1: Each item can go into only one bin
 for i in range(num_items):
-    one_bin_per_item = cqm.add_constraint(sum(item_in_bin[i]) == 1, label=f'item_placing_{i}')
+#    one_bin_per_item = cqm.add_constraint(sum(item_in_bin[i]) == 1, label=f'item_placing_{i}')
+    one_bin_per_item = cqm.add_constraint(sum(item_in_bin[i][j] for j in range(num_bins)) == 1, label=f'item_placing_{i}')
 
 # Constraint 2: Each bin has limited capacity
 for j in range(num_bins):
     bin_up_to_capacity = cqm.add_constraint(
-        sum(weights[i] * item_in_bin[i][j] for i in range(num_items)) - bin_used[j] * bin_capacity <= 0,
+        sum(weights[i] * item_in_bin[i][j] for i in range(num_items)) - bin_used[j] * bin_capacity[j] <= 0,
         label=f'capacity_bin_{j}')
 
 # ------- Submit Model to Solver -------
