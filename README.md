@@ -22,7 +22,11 @@ We represent the problem as a **Constrained Quadratic Model**:
 1. We represent the problem using a **Constrained Quadratic Model**.
 1. We use the **LeapHybridCQMSampler** as solver.
 ### Notes
-1. The problem will be configured with:
-    1. 20 items with weight randomly selected from 10 to 20.
-    1. 5 bins of capacity 100.
+1. In order to test the problem, it will be configured with:
+    1. 5 items with weight [11, 12, 13, 14, 15].
+    1. 5 bins of capacity [12, 15, 28, 37].
     1. Hybrid solver time limit set to 10 seconds.
+    1. Correct solution is:
+        1. 2 bins used
+        1. Bin with capacity 28 containing [13, 15]
+        1. Bin with capacity 37 containing [11, 12, 14]
