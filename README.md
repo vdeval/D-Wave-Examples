@@ -1,7 +1,7 @@
 # D-Wave-Examples
 D-Wave example applications taken from D-Wave documentation
 ## Purpose
-This repository contains a set of examples extracted from D-Wave documentation, each one encoding the solution of an optimization problem. Each problem is described in this README file:
+This repository contains a set of examples extracted from D-Wave documentation, each one encoding the solution of an optimization problem. Each problem is described in this README file, with the following structure:
 1. Problem Description
 1. Mathematical formulation of objective function and constraints
 1. D-Wave workflow: which model, which solver, any pre processing, any post processing
@@ -30,3 +30,21 @@ We represent the problem as a **Constrained Quadratic Model**:
         1. 2 bins used
         1. Bin with capacity 28 containing [13, 15]
         1. Bin with capacity 37 containing [11, 12, 14]
+## Stock Sales Strategy
+### Problem description
+You have some number of **shares** that you want to sell in daily blocks over a **defined interval of days**. Each sale of shares affects the **market price** of the stock. The goal is to find the **optimal number of shares to sell per day** to **maximize revenue from the total sales**.
+### Problem formulation
+We represent the problem as a **Constrained Quadratic Model**:
+1. The  number of shares sold each day is associated to the integer variable **s_\<i\>**.
+1. The daily price of shares is associated to the integer variable **p_\<i\>**.
+1. The daily revenue is the number of shares sold multiplied by the price on each sales day. To maximize the total revenue, is to minimize the negative sum of all the daily revenues.
+1. The total numeber of shares sold cannot exceed the initial number of shares.
+1. Price at first day is fixed.
+1. Price at day i, p_\<i\>, is given by p_\<i-1\> plus the price increment given by &alpha; * s_\<i-1\>
+### Problem workflow
+1. We represent the problem using a **Constrained Quadratic Model**.
+1. We use the **LeapHybridCQMSampler** as solver.
+### Notes
+1. p_\<i\> and s_\<i\> are positive integer variables. In order to reduce the solution space the solver must search for, it is important to set upper bounds gpr these variables. For this problem it is possible to define these upper bounds:
+    1.  On any day, you cannot sell more than the total number of shares you start with.
+    1. The maximum share price is the sum of the initial price and the total price increase that would result from selling all your shares.
