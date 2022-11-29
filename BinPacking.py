@@ -66,6 +66,8 @@ feasible_sampleset = sampleset.filter(lambda row: row.is_feasible)
 if len(feasible_sampleset):      
    best = feasible_sampleset.first
    print("{} feasible solutions of {}.".format(len(feasible_sampleset), len(sampleset)))
+else:
+   print("No feasible solution found")
 
 # Helper function (for subsequent steps)
 def get_indices(name):
