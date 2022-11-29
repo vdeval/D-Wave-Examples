@@ -48,7 +48,6 @@ We represent the problem as a **Constrained Quadratic Model**:
 1. p_\<i\> and s_\<i\> are positive integer variables. In order to reduce the solution space the solver must search for, it is important to set upper bounds gpr these variables. For this problem it is possible to define these upper bounds:
     1.  On any day, you cannot sell more than the total number of shares you start with.
     1. The maximum share price is the sum of the initial price and the total price increase that would result from selling all your shares.
-    # D-Wave-JSP
 
 ## Job Scheduling Problem
 ### Problem description
@@ -60,7 +59,7 @@ This is the more general definition of Job Scheduling Problem. In this example, 
 
 ### Problem formulation
 The set of jobs to be executed is defined in a dictionary:
-1. Each job is identified by a key whihc is its name (*string*) and has a vector as value.
+1. Each job is identified by a key which is its name (*string*) and has a vector as value.
 1. The vector contains the operations to be executed on each machine, in the proper order:
     1. Each entry of the vector is a tuple: (machine, time)
     1. The machine field (*string*) identifies the specific machine to be used
