@@ -48,3 +48,29 @@ We represent the problem as a **Constrained Quadratic Model**:
 1. p_\<i\> and s_\<i\> are positive integer variables. In order to reduce the solution space the solver must search for, it is important to set upper bounds gpr these variables. For this problem it is possible to define these upper bounds:
     1.  On any day, you cannot sell more than the total number of shares you start with.
     1. The maximum share price is the sum of the initial price and the total price increase that would result from selling all your shares.
+    # D-Wave-JSP
+
+## Job Scheduling Problem
+### Problem description
+A set of jobs are described as a sequence of operations to be executed on machines. Each operation can require a given time, different from job to job.
+
+The selection of which job start firsts, which precedence apply to access machines, etc, shall be done with the task of minimizing the overall time requested to complete all the jobs.
+
+This is the more general definition of Job Scheduling Problem. In this example, we focus on a simplified version. Assuming that the scheduling can be arranged to have an overall execution time not bigger than **Tmax**, found a feasible schedule to satisfy it.
+
+### Problem formulation
+The set of jobs to be executed is defined in a dictionary:
+1. Each job is identified by a key whihc is its name (*string*) and has a vector as value.
+1. The vector contains the operations to be executed on each machine, in the proper order:
+    1. Each entry of the vector is a tuple: (machine, time)
+    1. The machine field (*string*) identifies the specific machine to be used
+    1. The time field identifies the time needed to excute the operation on the machine (*integer*)
+
+The Tmax value (*integer*) can be either defined in advance or left to the program to be calculate:
+1. If set to zero, the program will set it. The program will assume jobs operating in parallel:
+    1. First step: all the jobs execute their first operation. If they contend for any machine, they are executed one after the other. The total time be the maximum value among the all the machines.
+    1. Same calculation for all the other steps (as long as the longest job).
+    1. The overall time is the sum of all the steps. This is, by calculation, a feasible time.
+1. If set to a positive integer, it will be used by the program.
+
+The above data are encoded in a **Constrained Quadratic Model**.
