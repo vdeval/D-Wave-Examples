@@ -90,3 +90,9 @@ The problem can be expressed as a **Binary Quadratic Model** where:
 The solution of the BQM gives the configuration of input variables which can produce the observed outputs.
 
 Notes that more of one configuration of input variables can lead to the same outputs, therefore more than one solution shall be taken.
+
+### Notes
+1. The D-Wave library *dimod.generators* does not contain all the logical gates. Moreover, if we want apply this technique to fault identification, we should have special gates like *Exclusive OR gate*, *Priority AND gate* and *Inhibit gate*:
+    1. Create a stand-alone library containing dimod.generators gates.
+    1. Add *NOT gate*.
+    1. Extend to the missing, specific gates. 
