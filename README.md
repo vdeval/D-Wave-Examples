@@ -1,7 +1,9 @@
 # D-Wave-Examples
-D-Wave example applications taken from D-Wave documentation
+Experiments based on example applications available in D-Wave documentation.
 ## Purpose
-This repository contains a set of examples extracted from D-Wave documentation, each one encoding the solution of an optimization problem. Each problem is described in this README file, with the following structure:
+This repository contains prototype applications originated from examples extracted from D-Wave documentation. In some cases D-Wave examples are used and replicated directly, with the purpose of mastering all the techniques used in that code. In other cases the techniques used in a D-Wave example are used as a base to be applied for another problem.
+
+Each problem is described in this README file, with the following structure:
 1. Problem Description
 1. Mathematical formulation of objective function and constraints
 1. D-Wave workflow: which model, which solver, any pre processing, any post processing
@@ -11,7 +13,7 @@ This repository contains a set of examples extracted from D-Wave documentation, 
 A set of **items**, each one with a specific **weight**, has to be packed in a collection on **bins**, each one with a specific **capacity**. The minimum set of bins has to be used.
 ### Problem formulation
 We represent the problem as a **Constrained Quadratic Model**:
-1. Each bin **b<sub>j</sub>** is associated to a binery variable **bin_used_\<j\>** indicating that bin b<sub>j</sub> is in use.
+1. Each bin **b<sub>j</sub>** is associated to a binary variable **bin_used_\<j\>** indicating that bin b<sub>j</sub> is in use.
 1. To minimize the number of used bins is to minimize the **sum of bin_used_\<j\> variables with value 1**.
 1. Each item can go into only one bin:
     1. We use the binary variable **x<sub>i,j</sub>** to indicate that item **i** is in bin **j**
@@ -73,3 +75,18 @@ The Tmax value (*integer*) can be either defined in advance or left to the progr
 1. If set to a positive integer, it will be used by the program.
 
 The above data are encoded in a **Constrained Quadratic Model**.
+
+## Fault Identification
+### Problem description
+Given a set of symptoms (boolean), identify the most likelihood causes (boolean).
+### Problem formulation
+The relationship between a symptom and its causes can be expressed as a boolean formula using AND, OR and NOT operations.
+
+The problem can be expressed as a **Binary Quadratic Model** where:
+1. Variables are allocated to  causes (inputs) and symptoms (output).
+1. The boolean networks, relating causes (inputs) to symptoms (output), are encoded.
+1. The values of the output variables are *fixed*.
+
+The solution of the BQM gives the configuration of input variables which can produce the observed outputs.
+
+Notes that more of one configuration of input variables can lead to the same outputs, therefore more than one solution shall be taken.
