@@ -10,6 +10,8 @@ from dimod.typing import Variable
 from dimod.vartypes import Vartype
 from dimod.generators import and_gate, or_gate
 
+from collections import OrderedDict
+
 
 # ------- Definition of NOT gate (not available in dimod.generators) -------
 def not_gate(in0: Variable, out: Variable, *, strength: float = 1.0) -> BinaryQuadraticModel:
@@ -43,13 +45,20 @@ def not_gate(in0: Variable, out: Variable, *, strength: float = 1.0) -> BinaryQu
 
 # ------- Model Preparation -------
 bqm = BinaryQuadraticModel(Vartype.BINARY)
+# o1
 bqm += and_gate("i1", "i2", "x1")
 bqm += or_gate("i3", "i4", "x2")
 bqm += not_gate("x1", "x3")
 bqm += not_gate("x2", "x4")
 bqm += and_gate("x3", "x4","o1")
+# o2
+bqm += or_gate("i1", "i2", "x5")
+bqm += and_gate("i3", "i4", "x6")
+bqm += not_gate("x6", "x7")
+bqm += and_gate("x5", "x7","o2")
 
 bqm.fix_variable("o1", 1)
+bqm.fix_variable("o2", 1)
 
 # ------- Sampling -------
 sampler = DWaveSampler()
@@ -57,5 +66,7 @@ embedding_sampler = EmbeddingComposite(sampler)
 sampleset = embedding_sampler.sample(bqm, num_reads=100, label='Fault Identification')
 
 # ------- Printing -------
-print("Best solution found: \n",sampleset.first.sample)
-#TODO: print more than one solution, ordered by energy
+# print("Best solution found: \n",sampleset.first.sample)
+
+print("\nAll the solutions: \n")
+print(sampleset)
